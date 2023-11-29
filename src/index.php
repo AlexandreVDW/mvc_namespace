@@ -19,10 +19,6 @@ switch ($page) {
     case 'articles-index':
         (new ArticleController())->index();
         break;
-    default:
-    // Handle the case where no valid page is provided
-    (new HomepageController())->index();
-    break;
     case 'articles-show':
         $id = $_GET['id'] ?? null;
         if ($id) {
@@ -31,6 +27,9 @@ switch ($page) {
             // Handle the case where no valid id is provided
             (new ArticleController())->index();
         }
+        break;
+    case 'articles-create':
+        (new ArticleController())->create();
         break;
     case 'authors': // Add a case for the authors index page
         (new AuthorController())->index();
@@ -43,4 +42,11 @@ switch ($page) {
             // Handle the case where no ID is provided
         }
         break;
+    case 'authors-create':
+        (new AuthorController())->create();
+        break;
+    default:
+        // Handle the case where no valid page is provided
+        (new HomepageController())->index();
+        break;   
 }

@@ -80,4 +80,19 @@ class ArticleController
     // Load the view and pass the Article object to it
     require './Views/articles/show.php';
     }
+
+    public function create()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $authorName = $this->getAuthorName($_POST['author']);
+            $article = new Article(null, $_POST['title'], $_POST['description'], $_POST['publish_date'], $_POST['author'], $authorName);
+            $article->save();
+
+            // Redirect to the page with all the articles
+            header("Location: /mvc_namespace/src/index.php?page=articles");
+            exit;
+        } else {
+            require './Views/articles/create.php';
+        }
+    }
 }

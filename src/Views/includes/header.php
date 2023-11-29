@@ -19,5 +19,11 @@
             <li>
                 <a href="index.php?page=authors">Authors</a>
             </li>
+            <li>
+                <a href="index.php?page=articles-create">Create article</a>
+            </li>
+            <li>
+                <a href="index.php?page=authors-create">Create author</a>
+            </li>
         </ul>
     </header>

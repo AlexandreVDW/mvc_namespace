@@ -35,4 +35,21 @@ class Article
     // Return null if publishDate is null
     return null;
     }
+    
+    public function save()
+    {
+        // Get a DatabaseManager instance
+        $dbManager = new DatabaseManager();
+
+        // Prepare an INSERT statement
+        $stmt = $dbManager->getPdo()->prepare("INSERT INTO articles (title, description, publish_date, id_author) VALUES (:title, :description, :publish_date, :id_author)");
+
+        // Bind the form data to the statement and execute it
+        $stmt->execute([
+            ':title' => $this->title,
+            ':description' => $this->description,
+            ':publish_date' => $this->publishDate,
+            ':id_author' => $this->authorId
+    ]);
+    }
 }

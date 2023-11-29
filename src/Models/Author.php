@@ -22,5 +22,31 @@ class Author
     {
         return $this->name;
     }
+
+    public static function getAll()
+    {
+        // Get a DatabaseManager instance
+        $dbManager = new DatabaseManager();
+
+        // Prepare a SELECT statement
+        $stmt = $dbManager->getPdo()->prepare("SELECT * FROM author");
+
+        // Execute the statement
+        $stmt->execute();
+
+        // Fetch all the authors as an associative array
+        $authorsArray = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        // Create an array to hold the Author objects
+        $authors = [];
+
+        // Loop through the results and create Author objects
+        foreach ($authorsArray as $authorData) {
+            $authors[] = new Author($authorData['id'], $authorData['author']);
+        }
+
+        // Return the array of Author objects
+        return $authors;
+    }
 }
 ?>
