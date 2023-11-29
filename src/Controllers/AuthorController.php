@@ -59,4 +59,16 @@ class AuthorController
 
         require './Views/authors/show.php';
     }
+    public function create()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $author = new author(null, $_POST['author']);
+            $author->save();
+
+            header("Location: /mvc_namespace/src/index.php?page=authors");
+            exit;
+        } else {
+            require './Views/authors/create.php';
+        }
+    }
 }

@@ -15,7 +15,7 @@ $authors = Author::getAll();
 <textarea name="description"></textarea> 
 <br>
 <label for="publish_date">Publish date:</label>
-<input type="date" name="publish_date">
+<input type="datetime-local" name="publish_date">
 <br>
 <label for="author">Author:</label>
 <select name="author">

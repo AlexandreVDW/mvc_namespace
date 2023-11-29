@@ -48,5 +48,18 @@ class Author
         // Return the array of Author objects
         return $authors;
     }
+    public function save()
+    {
+        // Get a DatabaseManager instance
+        $dbManager = new DatabaseManager();
+
+        // Prepare an INSERT statement
+        $stmt = $dbManager->getPdo()->prepare("INSERT INTO author (author) VALUES (:author)");
+
+        // Bind the form data to the statement and execute it
+        $stmt->execute([
+            ':author' => $this->name
+        ]);
+    }
 }
 ?>
