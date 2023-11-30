@@ -1,5 +1,7 @@
 <?php
 
+// Models/Author.php
+
 namespace App\Models;
 
 class Author
@@ -48,6 +50,7 @@ class Author
         // Return the array of Author objects
         return $authors;
     }
+
     public function save()
     {
         // Get a DatabaseManager instance
@@ -60,6 +63,26 @@ class Author
         $stmt->execute([
             ':author' => $this->name
         ]);
+    }
+
+    public function update()
+    {
+        // Get a DatabaseManager instance
+        $dbManager = new DatabaseManager();
+
+        // Prepare an UPDATE statement
+        $stmt = $dbManager->getPdo()->prepare("UPDATE author SET author = :author WHERE id = :id");
+
+        // Bind the form data to the statement and execute it
+        $stmt->execute([
+            ':author' => $this->name,
+            ':id' => $this->id
+        ]);
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 }
 ?>

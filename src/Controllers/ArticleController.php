@@ -1,5 +1,7 @@
 <?php
 
+// Controllers/ArticleController.php
+
 declare(strict_types = 1);
 
 namespace App\Controllers;
@@ -95,4 +97,69 @@ class ArticleController
             require './Views/articles/create.php';
         }
     }
+
+    public function update($id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Fetch the existing article
+            $existingArticle = $this->getArticleById($id);
+
+            // Update the existing article with new data
+            $existingArticle->title = $_POST['title'];
+            $existingArticle->description = $_POST['description'];
+            $existingArticle->publishDate = $_POST['publish_date'];
+            $existingArticle->authorId = $_POST['author'];
+
+            // Save the updated article
+            $existingArticle->update();
+
+            // Redirect to the page with all the articles
+            header("Location: /mvc_namespace/src/index.php?page=articles");
+            exit;
+        } else {
+            // Fetch the existing article to pre-fill the form
+            $article = $this->getArticleById($id);
+
+            // Fetch the authors from the database
+            $authors = Author::getAll();
+
+            // Load the view with the existing article and authors
+            require './Views/articles/update.php';
+        }
+    }
+
+    private function getArticleById($id)
+    {
+        // Fetch the article from the database using a prepared statement
+        $stmt = $this->dbManager->getPdo()->prepare("SELECT * FROM articles WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+        $rawArticle = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        // Check if the article exists
+        if (!$rawArticle) {
+            // Handle non-existing article
+            return;
+        }
+
+        // Convert the raw article into an Article object
+        return new Article($rawArticle['id'], $rawArticle['title'], $rawArticle['description'], $rawArticle['publish_date'], $rawArticle['id_author']);
+    }
+
+    public function delete($id)
+    {
+        $article = $this->getArticleById($id);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Delete the article
+            $article->delete();
+
+            // Redirect to the page with all the articles
+            header("Location: /mvc_namespace/src/index.php?page=articles");
+            exit;
+        } else {
+            // Display a delete confirmation
+            require './Views/articles/delete.php';
+        }
+    }
+
 }

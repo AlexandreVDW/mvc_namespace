@@ -1,5 +1,7 @@
 <?php
 
+// Controllers/AuthorController.php
+
 declare(strict_types = 1);
 
 namespace App\Controllers;
@@ -70,5 +72,41 @@ class AuthorController
         } else {
             require './Views/authors/create.php';
         }
+    }
+
+    public function update($id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $existingAuthor = $this->getAuthorById($id);
+
+            // Utilise les méthodes publiques pour accéder et mettre à jour les propriétés
+            $existingAuthor->setName($_POST['author']);
+
+            // Enregistre l'auteur mis à jour
+            $existingAuthor->update();
+
+            // Redirige vers la page avec tous les auteurs
+            header("Location: /mvc_namespace/src/index.php?page=authors");
+            exit;
+        } else {
+            // Récupère l'auteur existant pour pré-remplir le formulaire
+            $author = $this->getAuthorById($id);
+
+            // Charge la vue avec l'auteur existant
+            require './Views/authors/update.php';
+        }
+    }
+
+    private function getAuthorById($id)
+    {
+        $stmt = $this->dbManager->getPdo()->prepare("SELECT * FROM author WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+        $rawAuthor = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$rawAuthor) {
+            return;
+        }
+
+        return new Author($rawAuthor['id'], $rawAuthor['author']);
     }
 }

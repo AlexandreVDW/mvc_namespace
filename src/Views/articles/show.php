@@ -8,6 +8,9 @@
     <p><?= $article->description ?></p>
     <p>by: <a href="index.php?page=authors-show&id=<?= $article->authorId ?>"><?= $this->getAuthorName($article->authorId) ?></a></p>
 
+    <p><a href="index.php?page=articles-update&id=<?= $article->id ?>">Update the story</a></p>
+    <p><a href="index.php?page=articles-delete&id=<?= $article->id ?>">Delete the story</a></p>
+
     <?php // TODO: links to next and previous ?>
     <?php if ($previousArticleId): ?>
         <a href="index.php?page=articles-show&id=<?= $previousArticleId ?>">Previous</a>

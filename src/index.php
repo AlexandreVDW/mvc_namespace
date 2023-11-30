@@ -1,5 +1,7 @@
 <?php
 
+// Index.php (rooter)
+
 declare(strict_types=1);
 
 ini_set('display_errors', '1');
@@ -31,6 +33,24 @@ switch ($page) {
     case 'articles-create':
         (new ArticleController())->create();
         break;
+    case 'articles-update': // Ajout du cas pour la mise à jour des articles
+        $id = $_GET['id'] ?? null;
+        if ($id) {
+            (new ArticleController())->update($id);
+        } else {
+            // Handle the case where no valid id is provided
+            (new ArticleController())->index();
+        }
+        break;
+    case 'articles-delete': // Ajout du cas pour la suppression des articles
+        $id = $_GET['id'] ?? null;
+        if ($id) {
+            (new ArticleController())->delete($id);
+        } else {
+            // Handle the case where no valid id is provided
+            (new ArticleController())->index();
+        }
+        break;
     case 'authors': // Add a case for the authors index page
         (new AuthorController())->index();
         break;
@@ -44,6 +64,15 @@ switch ($page) {
         break;
     case 'authors-create':
         (new AuthorController())->create();
+        break;
+    case 'authors-update':
+        $id = $_GET['id'] ?? null;
+        if ($id) {
+            (new AuthorController())->update($id);
+        } else {
+            // Handle the case where no valid id is provided
+            (new AuthorController())->index();
+        }
         break;
     default:
         // Handle the case where no valid page is provided

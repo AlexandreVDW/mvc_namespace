@@ -1,5 +1,7 @@
 <?php
 
+//Models/Article.php
+
 declare(strict_types=1);
 
 namespace App\Models;
@@ -51,5 +53,32 @@ class Article
             ':publish_date' => $this->publishDate,
             ':id_author' => $this->authorId
     ]);
+    }
+
+    public function update()
+    {
+        $dbManager = new DatabaseManager();
+
+        $stmt = $dbManager->getPdo()->prepare("UPDATE articles SET title = :title, description = :description, publish_date = :publish_date, id_author = :id_author WHERE id = :id");
+
+        $stmt->execute([
+            ':id' => $this->id,
+            ':title' => $this->title,
+            ':description' => $this->description,
+            ':publish_date' => $this->publishDate,
+            ':id_author' => $this->authorId
+        ]);
+    }
+
+    public function delete()
+    {
+        // Get a DatabaseManager instance
+        $dbManager = new DatabaseManager();
+
+        // Prepare a DELETE statement
+        $stmt = $dbManager->getPdo()->prepare("DELETE FROM articles WHERE id = :id");
+
+        // Bind the article ID to the statement and execute it
+        $stmt->execute([':id' => $this->id]);
     }
 }
